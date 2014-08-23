@@ -1,0 +1,12 @@
+{
+  "name": "corgi-server",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "restify": "~2.8.2",
+    "mongoose": "*"
+  }
+}
