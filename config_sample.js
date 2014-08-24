@@ -3,4 +3,6 @@ var config = {};
 
 config.dictionaryDB = "mongodb://username:password@your.db.com:port/dbname"
 
+config.port = 
+
 module.exports = config

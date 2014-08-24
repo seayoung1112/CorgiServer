@@ -29,6 +29,6 @@ function lookup(req, res, next) {
 var server = restify.createServer();
 server.get('/lookup/:word', lookup);
 
-server.listen(8080, function() {
+server.listen(config.port, function() {
 	console.log('%s listening at %s', server.name, server.url);
 });
