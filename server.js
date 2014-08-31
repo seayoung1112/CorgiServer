@@ -1,33 +1,31 @@
-var config = require('./config')
+var config = require('./config');
+var fs = require('fs');
+var path = require('path');
 
-// init mongoose
-var mongoose = require("mongoose");
-mongoose.connect(config.dictionaryDB);
+// init db
+var db = require('./db');
+db.init();
 
-var schema = new mongoose.Schema({
-		word: {type: String, trim: true, index: true},
-		entries: [{
-			speech: String,
-			senses: [{index: Number, text: String}]
-		}]
-	},{ collection: 'AHD' }
-);
-
-var AHDWord = mongoose.model('AHDWord', schema);
-
-var restify = require('restify');
-
-function lookup(req, res, next) {
-	res.charset = 'utf-8';
-	AHDWord.find({word: req.params.word}, function(err, result) {
-		var response = err ? err : result;
-		res.send(response);
-	});
-	return next();
+// add all models
+var model_path = __dirname + '/models'
+var models = fs.readdirSync(model_path);
+for (var i = 0; i < models.length; i++) {
+	model_file = models[i];
+	require(path.join(model_path, model_file));
 }
 
+var restify = require('restify');
 var server = restify.createServer();
-server.get('/lookup/:word', lookup);
+server.use(restify.CORS(config.CORS));
+
+// require controllers
+var dict = require('./controllers/dictionary');
+var article = require('./controllers/article');
+
+server.get('/lookup/:word', dict.lookup);
+server.get('/article/list', article.list);
+server.get('/article/get/:book', article.get);
+server.get('/article/get/:book/page/:pageNum', article.page);
 
 server.listen(config.port, function() {
 	console.log('%s listening at %s', server.name, server.url);

@@ -1,8 +1,15 @@
 // copy this to config.js and change the variables
 var config = {};
 
-config.dictionaryDB = "mongodb://username:password@your.db.com:port/dbname"
+config.db = {
+	dictionary: "mongodb://username:password@your.db.com:port/dbname",
+	article: "mongodb://username:password@your.db.com:port/dbname",
+}
 
-config.port = 
+config.port = ;
+
+config.CORS = {
+	origins: ['*']
+};
 
 module.exports = config
